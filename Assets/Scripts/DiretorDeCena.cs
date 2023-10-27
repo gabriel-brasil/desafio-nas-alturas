@@ -4,31 +4,34 @@ using UnityEngine;
 
 public class DiretorDeCena : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject imagemGabeOver;
     private Aviao aviao;
     private Pontuacao pontuacao;
+    private InterfaceGameOver interfaceGameOver;
+    private ControleDeDificuldade ControleDeDificuldade;
 
     private void Start()
     {
-        this.aviao = GameObject.FindAnyObjectByType<Aviao>();
+        this.aviao = GameObject.FindObjectOfType<Aviao>();
         this.pontuacao = GameObject.FindObjectOfType<Pontuacao>();
+        this.interfaceGameOver = GameObject.FindObjectOfType<InterfaceGameOver>();
+        this.ControleDeDificuldade = GameObject.FindObjectOfType<ControleDeDificuldade>();
     }
 
     public void FinalizarJogo()
     {
         Time.timeScale = 0;
-        this.imagemGabeOver.SetActive(true);
+        this.pontuacao.salvarRecorde();
+        this.interfaceGameOver.mostrarGameOver();
+        this.ControleDeDificuldade.ReiniciarDicifuldade();
     }
 
     public void ReiniciarJogo()
     {
         Time.timeScale = 1;
-        this.imagemGabeOver.SetActive(false);
         this.aviao.Reiniciar();
         this.DestruirObstaculos();
         this.pontuacao.zerarPonto();
-
+        this.interfaceGameOver.ocultarGameOver();
     }
 
     private void DestruirObstaculos()

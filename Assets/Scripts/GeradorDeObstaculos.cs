@@ -5,14 +5,23 @@ using UnityEngine;
 public class GeradorDeObstaculos : MonoBehaviour
 {
     [SerializeField]
-    private float tempoParaGerar;
-    private float cronometro;
+    private float tempoParaGerarFacil;
+    [SerializeField]
+    private float tempoParaGerarDificil;
+
     [SerializeField]
     private GameObject manualDeInstrucoes;
+    private float cronometro;
+    private ControleDeDificuldade ControleDeDificuldade;
+
+    private void Start()
+    {
+        this.ControleDeDificuldade = GameObject.FindObjectOfType<ControleDeDificuldade>();
+    }
 
     private void Awake()
     {
-        this.cronometro = this.tempoParaGerar;
+        this.cronometro = this.tempoParaGerarFacil;
     }
 
     void Update()
@@ -20,8 +29,8 @@ public class GeradorDeObstaculos : MonoBehaviour
         this.cronometro -= Time.deltaTime;
         if (this.cronometro <= 0)
         {
-            this.cronometro = Random.Range(0.5f, this.tempoParaGerar);
             GameObject.Instantiate(this.manualDeInstrucoes, this.transform.position, Quaternion.identity);
+            this.cronometro = Mathf.Lerp(this.tempoParaGerarFacil, this.tempoParaGerarDificil, this.ControleDeDificuldade.Dificuldade);
         }
     }
 }

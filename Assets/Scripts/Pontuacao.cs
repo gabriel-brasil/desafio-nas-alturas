@@ -7,7 +7,7 @@ public class Pontuacao : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text textoPontuacao;
-    private int pontuacao;
+    public int Pontos { get; private set; }
     private AudioSource audioPontuacao;
 
     private void Awake()
@@ -17,20 +17,27 @@ public class Pontuacao : MonoBehaviour
 
     public void adicionarPonto()
     {
-        this.pontuacao++;
+        this.Pontos++;
         this.atualizarTextoPontuacao();
         this.audioPontuacao.Play();
     }
 
     public void zerarPonto()
     {
-        this.pontuacao = 0;
+        this.Pontos = 0;
         this.atualizarTextoPontuacao();
     }
 
     private void atualizarTextoPontuacao()
     {
-        this.textoPontuacao.text = this.pontuacao.ToString();
+        this.textoPontuacao.text = this.Pontos.ToString();
     }
 
+    public void salvarRecorde()
+    {
+        if (PlayerPrefs.GetInt("recorde") < this.Pontos)
+        {
+            PlayerPrefs.SetInt("recorde", this.Pontos);
+        }
+    }
 }
